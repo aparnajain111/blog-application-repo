@@ -1,0 +1,19 @@
+{% extends 'blogapp/base.html' %}
+{% block title_block %}AMA BLOG HOME PAGE{% endblock  %}
+{% block body_block %}
+<h1><a href="/">AMA'S BLOG</a></h1>
+{% if tag %}
+<h2>Posts tagged with "{{tag.name}}"</h2>
+{% endif %}
+{% for post in post_list %}
+<h2><a href="{{post.get_absolute_url}}">{{post.title}}</a></h2>
+<p>Tags:
+{% for tag in post.tags.all %}
+<a href="{% url 'post_list_by_tag_name' tag.slug %}" class="btn btn-xs btn-danger">{{tag.name}}</a>
+{% endfor %}
+</p>
+<p id='date'>Published on {{post.publish}} by {{post.author|title}}</p>
+{{post.body|truncatewords:30|linebreaks}}
+{% endfor %}
+{% include 'blogapp/pagination.html' with page=post_list %}
+{% endblock  %}
